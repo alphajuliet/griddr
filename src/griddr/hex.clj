@@ -6,7 +6,7 @@
 ;; See https://www.redblobgames.com/grids/parts/
 ;;
 
-(def nn-hex
+(def nn
   [[1 0] [0 1] [-1 1] [-1 0] [0 -1] [1 -1]])
 
 

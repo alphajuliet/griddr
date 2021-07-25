@@ -6,7 +6,7 @@
 (def nn
   [[0 1] [1 0] [0 -1] [-1 0]])
 
-(defn edge-locations
+(defn- edge-locations
   "Locations that share an edge."
   [[x y]]
   (mapv #(g/addv [x y] %) nn))
@@ -53,8 +53,9 @@
         hole-edges (neighbouring-edges grid [x y])]
     (every? true? (map g/edge=? tile-edges hole-edges))))
 
-(defn allowed-placement
+(defn allowed-locations
   "Return the coordinates where `tile` can be placed on the grid."
   [grid tile]
   (filter #(edge-match? grid % tile) (perimeter-locations grid)))
+
 ;; The End
