@@ -12,7 +12,7 @@ This library starts with the basics of edge-matching in a rectangular grid. Over
 
 The implementation of the 2D grid is to use a sparse matrix, with grid locations as the keys in a Clojure map, e.g. `{[0 0] :val-a [1 0] :val-b ...}`. The map is therefore only ever as big as the number of placed tiles.
 
-To match the edges, it requires that a "tile" is a Clojure map that contains (at least) a key called `edges`. This is a vector of edges, ordered clockwise from the top edge. The type of the edges doesn't matter as long as they can be determined to be equal or not. It assumes that edges must match; it doesn't handle complementary matching, e.g. A connects only to B.
+To match the edges, it requires that a "tile" is a Clojure map that contains (at least) a key called `edges`. This is a vector of edges, _ordered clockwise from the top edge_. The type of the edges doesn't matter as long as they can be determined to be equal or not. It assumes that edges match symmetrically; it doesn't handle directional matching, e.g. A connects to B, but B does not connect to A.
 
 The important function is `(allowed-placement grid tile)` that returns the permitted grid locations where tile can be played in a given grid. Another interesting function is `(perimeter grid)`, which returns a list of the empty locations adjacent to the occupied grid locations. These are the candidate locations for placing a tile.
 
