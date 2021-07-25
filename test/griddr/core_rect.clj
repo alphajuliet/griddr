@@ -30,7 +30,14 @@
       (is (= [nil nil 0 0] (grid/neighbouring-edges grid1 [1 1])))
       (is (grid/edge-match? grid1 [1 1] t1))
       (is (not (grid/edge-match? grid1 [1 1] t2)))
-      (is '([1 1] [2 0] [2 -1]) (grid/allowed-placement grid1 t0)))))
+      (is '([1 1] [2 0] [2 -1]) (grid/allowed-locations grid1 t0))))
 
+  (testing "Rotate and flip"
+    (let [t0 {:edges [0 0 0 0]}
+          t1 {:edges [1 1 0 0]}
+          t2 {:edges [1 0 1 0]}]
+      (is (= [5 8 7 6] (grid/hflip [5 6 7 8])))
+      (is (= [7 6 5 8] (grid/vflip [5 6 7 8])))
+      (is (= [8 5 6 7] (grid/rotate-right [5 6 7 8]))))))
 
 ;; The End

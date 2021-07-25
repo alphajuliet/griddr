@@ -2,6 +2,37 @@
   (:require [griddr.core :as g]))
 
 ;;--------------------------------
+(defn- swap-edges
+  "Utility function to swap edges for flips and rotations."
+  [edges order]
+  (mapv #(nth edges %) order))
+
+(defn hflip
+  [edges]
+  (swap-edges edges [0 3 2 1]))
+
+(defn vflip
+  [edges]
+  (swap-edges edges [2 1 0 3]))
+
+(defn rotate-right
+  [edges]
+  (swap-edges edges [3 0 1 2]))
+
+(defn rotate-left
+  [edges]
+  (swap-edges edges [1 2 3 0]))
+
+(defn rotate-180
+  [edges]
+  (swap-edges edges [2 3 0 1]))
+
+(defn all-rotations
+  "Return all rotations starting with the original."
+  [edges]
+  ((juxt identity rotate-right rotate-180 rotate-left) edges))
+
+;;--------------------------------
 ;; Locations relative to [0 0] that share an edge
 (def nn
   [[0 1] [1 0] [0 -1] [-1 0]])
@@ -27,6 +58,7 @@
   [grid [x y]]
   (remove #(contains? grid %) (edge-locations [x y])))
 
+
 (defn perimeter-locations
   "List the coordinates of the perimeter locations, i.e. unoccupied spaces
   that border the existing grid."
@@ -39,11 +71,11 @@
   "Return the neighbouring tile edges at a given location."
   ;; A little messy because of the different indices.
   [grid [x y]]
-  (let [nn (edge-tiles grid [x y])]
-    (vector (nth (:edges (nth nn 0)) 2)
-            (nth (:edges (nth nn 1)) 3)
-            (nth (:edges (nth nn 2)) 0)
-            (nth (:edges (nth nn 3)) 1))))
+  (let [nb (edge-tiles grid [x y])]
+    (vector (get-in nb [0 :edges 2])
+            (get-in nb [1 :edges 3])
+            (get-in nb [2 :edges 0])
+            (get-in nb [3 :edges 1]))))
 
 (defn edge-match?
   "Does a given tile's edges fit at the given coordinate?"
@@ -56,6 +88,7 @@
 (defn allowed-locations
   "Return the coordinates where `tile` can be placed on the grid."
   [grid tile]
-  (filter #(edge-match? grid % tile) (perimeter-locations grid)))
+  (filter #(edge-match? grid % tile)
+          (perimeter-locations grid)))
 
 ;; The End
